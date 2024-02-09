@@ -4,7 +4,24 @@
   set_fact:
     cloudrc_dest: "/etc/kolla/triliovault-cloudrc"
 
-- name: Copy Create Cloud Trust Ansible Node
+- name: Copy Create Cloud Trust on OpenStack nodes
+  template:
+    src: create_cloud_trust.sh
+    dest: "{{ item }}"
+    mode: '0777'
+  with_items:
+    - "/tmp/create_cloud_trust.sh"
+
+- name: Copy Triliovault-cloudrc on OpenStack nodes
+  template:
+    src: triliovault-cloudrc
+    dest: "{{ item }}"
+    mode: '0777'
+  with_items:
+    - "{{ cloudrc_dest }}"
+  become: True
+
+- name: Copy Create Cloud Trust on Ansible Node
   template:
     src: create_cloud_trust.sh
     dest: "{{ item }}"
@@ -13,7 +30,7 @@
     - "/tmp/create_cloud_trust.sh"
   delegate_to: localhost
 
-- name: Copy Triliovault-cloudrc Ansible Node
+- name: Copy Triliovault-cloudrc on Ansible Node
   template:
     src: triliovault-cloudrc
     dest: "{{ item }}"
@@ -21,12 +38,14 @@
   with_items:
     - "{{ cloudrc_dest }}"
   delegate_to: localhost
+  become: True
 
 - name: Verify triliovault-cloudrc is present or not
   stat: 
     path: "{{ cloudrc_dest }}"
   register: trilio_rc
   delegate_to: localhost
+  become: True
 
 - name: GET CLOUD_ADMIN_USER_ID
   shell: ". {{ cloudrc_dest }} && openstack user show --insecure --domain {{ cloud_admin_domainname }} -f value -c id {{ cloud_admin_username }}"
@@ -34,6 +53,7 @@
   delegate_to: localhost
   when:
     - trilio_rc.stat.exists == true
+  become: True
 
 - set_fact:
     Cloud_Admin_UserID: "{{ admin_usr_id.stdout }}"
@@ -44,6 +64,7 @@
   delegate_to: localhost
   when:
     - trilio_rc.stat.exists == true
+  become: True
 
 - set_fact:
     Triliovault_Wlm_User_ID: "{{ wlm_usr_id.stdout }}"
