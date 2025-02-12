@@ -153,7 +153,7 @@ triliovault_datamover_dimensions: "{{ default_container_dimensions }}"
 
 
 ###### START OF WORKLOADMGR ####
-triliovault_wlm_image_full: "{{ triliovault_docker_registry }}/trilio/kolla-{{ kolla_base_distro }}-trilio-wlm:{{ triliovault_tag }}"
+triliovault_wlm_image_full: "{{ triliovault_docker_registry }}/trilio/kolla-{{ kolla_base_distro }}-trilio-wlm:{{ triliovault_wlm_tag | default(triliovault_tag) }}"
 
 
 triliovault_wlm_api_dimensions: "{{ default_container_dimensions }}"
