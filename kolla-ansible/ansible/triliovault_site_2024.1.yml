@@ -74,6 +74,23 @@
         - enable_zun_{{ enable_zun | bool }}
   tags: always
 
+- name: Apply role common
+  gather_facts: false
+  hosts:
+    - cron
+    - fluentd
+    - kolla-logs
+    - kolla-toolbox
+  serial: '{{ kolla_serial|default("0") }}'
+  max_fail_percentage: >-
+    {{ common_max_fail_percentage |
+       default(kolla_max_fail_percentage) |
+       default(100) }}
+  tags:
+    - common
+  roles:
+    - role: common
+
 - name: Apply haproxy config for triliovault services
   gather_facts: false
   hosts:
