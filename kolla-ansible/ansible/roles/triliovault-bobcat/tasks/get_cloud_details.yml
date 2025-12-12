@@ -13,6 +13,7 @@
     src: create_cloud_trust.sh
     dest: "{{ item }}"
     mode: '0755'
+  become: true
   when:
     - inventory_hostname in groups[triliovault_wlm_api_group]
   with_items:
