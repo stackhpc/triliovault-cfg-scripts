@@ -27,13 +27,13 @@
    - inventory_hostname in groups['horizon']
   tags: triliovault
 
-- name: Log into triliovault docker registry
-  become: true
-  docker_login:
-    registry: "{{ triliovault_docker_registry }}"
-    username: "{{ triliovault_docker_username }}"
-    password: "{{ triliovault_docker_password }}"
-    reauthorize: yes
-  when:
-   - inventory_hostname in groups['horizon']
-  tags: triliovault
+# - name: Log into triliovault docker registry
+#   become: true
+#   docker_login:
+#     registry: "{{ triliovault_docker_registry }}"
+#     username: "{{ triliovault_docker_username }}"
+#     password: "{{ triliovault_docker_password }}"
+#     reauthorize: yes
+#   when:
+#    - inventory_hostname in groups['horizon']
+#   tags: triliovault
