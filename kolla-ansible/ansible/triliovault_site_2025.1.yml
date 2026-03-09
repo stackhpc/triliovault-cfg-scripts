@@ -12,6 +12,10 @@
        default(kolla_max_fail_percentage) |
        default(100) }}
   tasks:
+    - name: End play if kolla_action is undefined
+      meta: end_play
+      when: kolla_action is undefined
+
     - name: Group hosts based on Kolla action
       group_by:
         key: "kolla_action_{{ kolla_action }}"
@@ -88,6 +92,10 @@
        default(100) }}
   tags:
     - common
+  pre_tasks:
+    - name: End play if kolla_action is undefined
+      meta: end_play
+      when: kolla_action is undefined
   roles:
     - role: common
 
@@ -105,6 +113,10 @@
     - { role: loadbalancer,
         when: enable_loadbalancer | bool }
   tasks:
+    - name: End play if kolla_action is undefined
+      meta: end_play
+      when: kolla_action is undefined
+
     - include_role:
         name: triliovault-epoxy
         tasks_from: loadbalancer
@@ -126,6 +138,10 @@
     - triliovault-wlm-cron
     - enable_triliovault | bool
   serial: '{{ kolla_serial|default("0") }}'
+  pre_tasks:
+    - name: End play if kolla_action is undefined
+      meta: end_play
+      when: kolla_action is undefined
   roles:
     - { role: triliovault-epoxy,
         tags: triliovault,
