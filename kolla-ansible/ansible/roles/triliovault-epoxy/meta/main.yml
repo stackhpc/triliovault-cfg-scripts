@@ -1,4 +1,4 @@
 ---
-#adependencies:
+#dependencies:
 #  - { role: common }
 #  - { role: horizon }
